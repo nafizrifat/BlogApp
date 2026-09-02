@@ -43,26 +43,55 @@ export class AddCategory {
     return this.addCategoryFormGroup.controls.urlHandle;
   }
 
+  // onFormSubmit() {
+
+  //   const addCategoryFormValue = this.addCategoryFormGroup.getRawValue();
+
+  //   const addCategoryRequestsDto: AddCategoryRequest = {
+  //     name: addCategoryFormValue.name,
+  //     urlHandle: addCategoryFormValue.urlHandle
+  //   }
+
+  //   this.categoryService.addCategory(addCategoryRequestsDto);
+
+
+
+
+  //   //console.log(this.addCategoryFormGroup.getRawValue());
+  //   // this.addCategorySubscribtion = this.categoryService.addCategory(this.model)
+  //   // .subscribe({
+  //   //   next: (response) => {
+  //   //     this.router.navigateByUrl('/admin/categories');
+  //   //  }
+  //   //})
+  // }
+//1. Observable approach
   onFormSubmit() {
 
-    const addCategoryFormValue = this.addCategoryFormGroup.getRawValue();
+  const formValue =
+    this.addCategoryFormGroup.getRawValue();
 
-    const addCategoryRequestsDto: AddCategoryRequest = {
-      name: addCategoryFormValue.name,
-      urlHandle: addCategoryFormValue.urlHandle
-    }
+  const request: AddCategoryRequest = {
+    name: formValue.name,
+    urlHandle: formValue.urlHandle
+  };
 
-    this.categoryService.addCategory(addCategoryRequestsDto);
+  this.categoryService
+    .addCategory(request)
+    .subscribe({
+      next: () => {
+        console.log('Category added successfully');
 
+        this.router.navigate([
+          '/admin/categories'
+        ]);
+      },
 
-
-
-    //console.log(this.addCategoryFormGroup.getRawValue());
-    // this.addCategorySubscribtion = this.categoryService.addCategory(this.model)
-    // .subscribe({
-    //   next: (response) => {
-    //     this.router.navigateByUrl('/admin/categories');
-    //  }
-    //})
-  }
+      error: () => {
+        console.error(
+          'Add Category Request Failed'
+        );
+      }
+    });
+}
 }

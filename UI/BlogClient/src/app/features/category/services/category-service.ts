@@ -15,25 +15,47 @@ export class CategoryService {
   updateCategoryStatus = signal<'idle' | 'loading' | 'error' | 'success'>('idle');
 
 
+  // addCategory(category: AddCategoryRequest) {
+  //   this.addCategoryStatus.set('loading');
+  //   this.http.post<void>(`${this.apiBaseUrl}/api/categories`, category).subscribe({
+  //     next: () => {
+  //       this.addCategoryStatus.set('success');
+  //     },
+  //     error: () => {
+  //       this.addCategoryStatus.set('error');
+  //     },
+  //   });
+  // }
+
+  //1. Observable approach
   addCategory(category: AddCategoryRequest) {
-    this.addCategoryStatus.set('loading');
-    this.http.post<void>(`${this.apiBaseUrl}/api/categories`, category).subscribe({
-      next: () => {
-        this.addCategoryStatus.set('success');
-      },
-      error: () => {
-        this.addCategoryStatus.set('error');
-      },
-    });
+    return this.http.post<void>(
+      `${this.apiBaseUrl}/api/categories`,
+      category
+    );
   }
 
+  //Signal-based Resource API using httpResource()
   getAllCategories() {
     return httpResource<Category[]>(() => `${this.apiBaseUrl}/api/categories`);
   }
 
+  //Observable approach
+  getAllCategories_Observable(): Observable<Category[]> {
+
+    return this.http.get<Category[]>(`${this.apiBaseUrl}/api/categories`);
+  }
+
+  // Signal-based Resource API using httpResource()
   getCategoryById(id: InputSignal<string | undefined>) {
     return httpResource<Category>(() => `${this.apiBaseUrl}/api/categories/${id()}`);
   }
+
+  // Observable version
+  getCategoryById_Observable(id: string): Observable<Category> {
+  return this.http.get<Category>(`${this.apiBaseUrl}/api/categories/${id}`
+  );
+}
 
   updateCategory(id: string, updateCategoryRequestDto: UpdateCategoryRequest) {
     this.updateCategoryStatus.set('loading');

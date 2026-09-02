@@ -10,6 +10,17 @@ import { UpdateCategoryRequest } from '../models/category.model';
   templateUrl: './edit-category.html',
   styleUrl: './edit-category.css',
 })
+
+// GET one category
+// → httpResource + Signals
+
+// UPDATE category
+// → HttpClient Observable handled inside service
+// → Signal status + effect()
+
+// DELETE category
+// → Observable returned by service
+// → component subscribes directly
 export class EditCategory {
 
 constructor() {
@@ -31,7 +42,9 @@ constructor() {
 
   private categoryService = inject(CategoryService);
   private router = inject(Router);
-  
+
+  // GET one category
+  // → httpResource + Signals
   categoryResourceRef = this.categoryService.getCategoryById(this.id);
   categoryResponse = this.categoryResourceRef.value;
 
