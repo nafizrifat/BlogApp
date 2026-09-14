@@ -21,6 +21,8 @@ import { UpdateCategoryRequest } from '../models/category.model';
 // DELETE category
 // → Observable returned by service
 // → component subscribes directly
+
+//effect() reacts to Signal changes, while subscribe() reacts to Observable emissionsout
 export class EditCategory {
 
 constructor() {
@@ -72,7 +74,9 @@ constructor() {
   this.editCategoryFormGroup.controls.urlHandle.patchValue(this.categoryResponse()?.urlHandle ?? '');
   });
 
-
+// UPDATE category (Observable+Signal)
+// → HttpClient Observable handled inside service
+// → Signal status + effect()
 onSubmit() {
   const id = this.id();
   if (!this.editCategoryFormGroup.valid || !id) {
@@ -89,6 +93,9 @@ onSubmit() {
   this.categoryService.updateCategory(id, updateCategoryRequestDto);
 }
 
+// DELETE category (classic Observable approach)
+// → Observable returned by service
+// → component subscribes directly
 onDelete() {
   const id = this.id();
   if (!id) {
