@@ -21,38 +21,54 @@
     </div>
 
     <!-- Content Field -->
-<div class="mb-3">
-  <div class="d-flex flex-row">
-    <div class="col-6 p-2">
-      <label class="form-label">Content</label>
-      <textarea class="form-control" formControlName="content" rows="5"></textarea>
+    <div class="mb-3">
+      <div class="d-flex flex-row">
+        <div class="col-6 p-2">
+          <label class="form-label">Content</label>
+          <textarea class="form-control" formControlName="content" rows="5"></textarea>
+        </div>
+        <div class="col-6 p-2" style="max-height: 350px; overflow-y: scroll">
+          <markdown [data]="addBlogPostForm.controls.content.getRawValue()"></markdown>
+        </div>
+      </div>
     </div>
-    <div class="col-6 p-2" style="max-height: 350px; overflow-y: scroll">
-      <markdown [data]="addBlogPostForm.controls.content.getRawValue()"></markdown>
-    </div>
-  </div>
-</div>
 
 
     <!-- Featured Image URL Field -->
-<div class="mb-3">
-  <label class="form-label">Featured Image URL</label>
+    <!-- <div class="mb-3">
+      <label class="form-label">Featured Image URL
+        <button class="btn btn-light" type="button" (click)="imageSelectorService.displayImageSelector()">
+          Select Images
+        </button>
+      </label>
 
-  @if (addBlogPostForm.controls.featuredImageUrl.getRawValue()) {
-  <div>
-    <img
-      style="width: 100px"
-      class="my-2"
-      [src]="addBlogPostForm.controls.featuredImageUrl.getRawValue()"
-    />
-  </div>
-  }
+      @if (addBlogPostForm.controls.featuredImageUrl.getRawValue()) {
+      <div>
+        <img style="width: 100px" class="my-2" [src]="addBlogPostForm.controls.featuredImageUrl.getRawValue()" />
+      </div>
+      }
 
-  <input type="text" class="form-control" formControlName="featuredImageUrl" />
-</div>
+      <input type="text" class="form-control" formControlName="featuredImageUrl" />
+    </div> -->
+
+    <div class="mb-3">
+      <label class="form-label">Featured Image URL
+        <button class="btn btn-light" type="button" (click)="imageSelectorService.displayImageSelector()">
+          Select Images
+        </button>
+      </label>
+
+      @if (addBlogPostForm.controls.featuredImageUrl.getRawValue()) {
+      <div>
+        <img style="width: 100px" class="my-2" [src]="addBlogPostForm.controls.featuredImageUrl.getRawValue()" />
+      </div>
+      }
+
+      <input type="text" class="form-control" formControlName="featuredImageUrl" />
+    </div>
 
 
-        <!-- Author Name -->
+    <!-- Author Name -->
     <div class="mb-3">
       <label class="form-label">Author Name</label>
       <input type="text" class="form-control" formControlName="author" />
@@ -63,7 +79,7 @@
       <label class="form-label">Published Date</label>
       <input type="date" class="form-control" formControlName="publishedDate" />
     </div>
-    
+
     <!-- Is Visible Checkbox Field -->
     <div class="mb-3">
       <div class="form-check">
@@ -73,13 +89,13 @@
     </div>
 
     <div class="mb-3">
-    <label class="form-label">Categories</label>
-    <select class="form-control" multiple formControlName="categories">
-      @for (category of categoriesResponse(); track category.id) {
+      <label class="form-label">Categories</label>
+      <select class="form-control" multiple formControlName="categories">
+        @for (category of categoriesResponse(); track category.id) {
         <option [value]="category.id">{{ category.name }}</option>
-      }
-    </select>
-  </div>
+        }
+      </select>
+    </div>
 
     <!-- Action Buttons -->
     <div class="mt-3">

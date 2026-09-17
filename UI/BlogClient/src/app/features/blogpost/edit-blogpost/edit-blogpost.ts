@@ -5,6 +5,8 @@ import { BlogPostService } from '../services/blog-post-service';
 import { CategoryService } from '../../category/services/category-service';
 import { UpdateBlogPostRequest } from '../models/blogpost.model';
 import { Router } from '@angular/router';
+import { ImageSelector } from '../../../shared/components/image-selector/image-selector';
+import { ImageSelectorService } from '../../../shared/services/image-selector-service';
 
 @Component({
   selector: 'app-edit-blogpost',
@@ -16,6 +18,7 @@ export class EditBlogpost {
   id = input<string>();
   blogPostService = inject(BlogPostService);
   categoryService = inject(CategoryService);
+  imageSelectorService = inject(ImageSelectorService);
   router = inject(Router);
 
   private categoriesResourceRef = this.categoryService.getAllCategories();
@@ -108,6 +111,7 @@ export class EditBlogpost {
       });
     }
   }
+
   onDelete() {
     const id = this.id();
     if (id) {
@@ -122,5 +126,19 @@ export class EditBlogpost {
       });
     }
   }
+
+  openImageSelector(){
+    this.imageSelectorService.displayImageSelector();
+  }
+
+  selectedImageEffectRef = effect(() => {
+  const selectedImageUrl = this.imageSelectorService.selectedImage();
+  if (selectedImageUrl) {
+    this.editBlogPostForm.patchValue({
+      featuredImageUrl: selectedImageUrl,
+    });
+  }
+});
+
 
 }

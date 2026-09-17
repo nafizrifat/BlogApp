@@ -1,10 +1,11 @@
-import { Component, inject } from '@angular/core';
+import { Component, effect, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BlogPostService } from '../services/blog-post-service';
 import { Router } from '@angular/router';
 import { AddBlogPostRequest } from '../models/blogpost.model';
 import { MarkdownComponent } from 'ngx-markdown';
 import { CategoryService } from '../../category/services/category-service';
+import { ImageSelectorService } from '../../../shared/services/image-selector-service';
 
 @Component({
   selector: 'app-add-blogpost',
@@ -15,9 +16,11 @@ import { CategoryService } from '../../category/services/category-service';
 export class AddBlogpost {
   blogPostService = inject(BlogPostService);
   categoryService = inject(CategoryService);
+  imageSelectorService = inject(ImageSelectorService);
+
   router = inject(Router);
- private categoriesResourceRef = this.categoryService.getAllCategories();
- categoriesResponse = this.categoriesResourceRef.value;
+  private categoriesResourceRef = this.categoryService.getAllCategories();
+  categoriesResponse = this.categoriesResourceRef.value;
 
 
   addBlogPostForm = new FormGroup({
@@ -56,7 +59,7 @@ export class AddBlogpost {
     categories: new FormControl<string[]>([]),
   });
 
-    onSubmit() {
+  onSubmit() {
     const formRawValue = this.addBlogPostForm.getRawValue();
     console.log(formRawValue);
 
@@ -69,7 +72,7 @@ export class AddBlogpost {
       isVisible: formRawValue.isVisible,
       urlHandle: formRawValue.urlHandle,
       publishedDate: new Date(formRawValue.publishedDate),
-      categories: formRawValue.categories??[]
+      categories: formRawValue.categories ?? []
     };
 
     this.blogPostService.createBlogPost(requestDto).subscribe({
@@ -84,5 +87,15 @@ export class AddBlogpost {
       },
     });
   }
+
+  selectedImageEffectRef = effect(() => {
+  const selectedImageUrl = this.imageSelectorService.selectedImage();
+  if (selectedImageUrl) {
+    this.addBlogPostForm.patchValue({
+      featuredImageUrl: selectedImageUrl,
+    });
+  }
+});
+
 
 }
