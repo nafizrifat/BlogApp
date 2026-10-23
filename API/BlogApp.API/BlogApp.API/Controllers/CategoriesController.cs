@@ -3,6 +3,7 @@ using BlogApp.API.Models.Domain;
 using BlogApp.API.Models.DTO;
 using BlogApp.API.Repositories.Interface;
 using CodePulse.API.Models.DTO;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -28,7 +29,7 @@ namespace BlogApp.API.Controllers
         //}
 
         [HttpPost]
-        //[Authorize(Roles = "Writer")]
+        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> CreateCategory([FromBody] CreateCategoryRequestDto request)
         {
             // Map DTO to Domain Model
@@ -53,7 +54,9 @@ namespace BlogApp.API.Controllers
 
             return Ok(response);
         }
+        
         [HttpGet]
+        //[Authorize(Roles ="Writer")]
         public async Task<IActionResult> GetAllCategories() 
         {
             IEnumerable<Category> categories = await categoryRepository.GetAllAsync();
@@ -99,6 +102,7 @@ namespace BlogApp.API.Controllers
         // PUT: https://localhost:7256/api/categories/{id}
         [HttpPut]
         [Route("{id:Guid}")]
+        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> EditCategory([FromRoute] Guid id, UpdateCategoryRequestDto request)
         {
             // Convert DTO to Domain Model
@@ -130,6 +134,7 @@ namespace BlogApp.API.Controllers
         // DELETE: https://localhost:7256/api/categories/{id}
         [HttpDelete]
         [Route("{id:Guid}")]
+        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> DeleteCategory([FromRoute] Guid id)
         {
             var category = await categoryRepository.DeleteAsync(id);

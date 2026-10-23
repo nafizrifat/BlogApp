@@ -15,25 +15,27 @@ export class CategoryService {
   updateCategoryStatus = signal<'idle' | 'loading' | 'error' | 'success'>('idle');
 
 
-  // addCategory(category: AddCategoryRequest) {
-  //   this.addCategoryStatus.set('loading');
-  //   this.http.post<void>(`${this.apiBaseUrl}/api/categories`, category).subscribe({
-  //     next: () => {
-  //       this.addCategoryStatus.set('success');
-  //     },
-  //     error: () => {
-  //       this.addCategoryStatus.set('error');
-  //     },
-  //   });
-  // }
+  addCategory(category: AddCategoryRequest) {
+    this.addCategoryStatus.set('loading');
+    this.http.post<void>(`${this.apiBaseUrl}/api/categories`, category, {
+      withCredentials: true,
+    }).subscribe({
+      next: () => {
+        this.addCategoryStatus.set('success');
+      },
+      error: () => {
+        this.addCategoryStatus.set('error');
+      },
+    });
+  }
 
   //1. Observable approach
-  addCategory(category: AddCategoryRequest) {
-    return this.http.post<void>(
-      `${this.apiBaseUrl}/api/categories`,
-      category
-    );
-  }
+  // addCategory(category: AddCategoryRequest) {
+  //   return this.http.post<void>(
+  //     `${this.apiBaseUrl}/api/categories`,
+  //     category
+  //   );
+  // }
 
   //Signal-based Resource API using httpResource()
   getAllCategories() {
@@ -53,14 +55,16 @@ export class CategoryService {
 
   // Observable version
   getCategoryById_Observable(id: string): Observable<Category> {
-  return this.http.get<Category>(`${this.apiBaseUrl}/api/categories/${id}`
-  );
-}
+    return this.http.get<Category>(`${this.apiBaseUrl}/api/categories/${id}`
+    );
+  }
 
   updateCategory(id: string, updateCategoryRequestDto: UpdateCategoryRequest) {
     this.updateCategoryStatus.set('loading');
 
-    this.http.put<void>(`${this.apiBaseUrl}/api/categories/${id}`, updateCategoryRequestDto)
+    this.http.put<void>(`${this.apiBaseUrl}/api/categories/${id}`, updateCategoryRequestDto, {
+      withCredentials: true,
+    })
       .subscribe({
         next: () => {
           this.updateCategoryStatus.set('success');
@@ -72,8 +76,10 @@ export class CategoryService {
   }
 
   deleteCategory(id: string): Observable<void> {
-  return this.http.delete<void>(`${this.apiBaseUrl}/api/categories/${id}`);
-}
+    return this.http.delete<void>(`${this.apiBaseUrl}/api/categories/${id}`,{
+      withCredentials: true,
+    });
+  }
 
 
 

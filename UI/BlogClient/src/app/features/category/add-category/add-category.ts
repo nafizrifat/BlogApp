@@ -13,8 +13,8 @@ import { Router } from '@angular/router';
 export class AddCategory {
 
   private router = inject(Router);
-  constructor(){
-        effect(() => {
+  constructor() {
+    effect(() => {
       if (this.categoryService.addCategoryStatus() === 'success') {
         console.log('Success');
         // Redirect back to caterogy list page
@@ -43,55 +43,56 @@ export class AddCategory {
     return this.addCategoryFormGroup.controls.urlHandle;
   }
 
-  // onFormSubmit() {
-
-  //   const addCategoryFormValue = this.addCategoryFormGroup.getRawValue();
-
-  //   const addCategoryRequestsDto: AddCategoryRequest = {
-  //     name: addCategoryFormValue.name,
-  //     urlHandle: addCategoryFormValue.urlHandle
-  //   }
-
-  //   this.categoryService.addCategory(addCategoryRequestsDto);
-
-
-
-
-  //   //console.log(this.addCategoryFormGroup.getRawValue());
-  //   // this.addCategorySubscribtion = this.categoryService.addCategory(this.model)
-  //   // .subscribe({
-  //   //   next: (response) => {
-  //   //     this.router.navigateByUrl('/admin/categories');
-  //   //  }
-  //   //})
-  // }
-//1. Observable approach
   onFormSubmit() {
 
-  const formValue =
-    this.addCategoryFormGroup.getRawValue();
+    const addCategoryFormValue = this.addCategoryFormGroup.getRawValue();
 
-  const request: AddCategoryRequest = {
-    name: formValue.name,
-    urlHandle: formValue.urlHandle
-  };
+    const addCategoryRequestsDto: AddCategoryRequest = {
+      name: addCategoryFormValue.name,
+      urlHandle: addCategoryFormValue.urlHandle
+    }
 
-  this.categoryService
-    .addCategory(request)
-    .subscribe({
-      next: () => {
-        console.log('Category added successfully');
+    this.categoryService.addCategory(addCategoryRequestsDto);
 
-        this.router.navigate([
-          '/admin/categories'
-        ]);
-      },
 
-      error: () => {
-        console.error(
-          'Add Category Request Failed'
-        );
-      }
-    });
-}
+
+
+    //console.log(this.addCategoryFormGroup.getRawValue());
+    // this.addCategorySubscribtion = this.categoryService.addCategory(this.model)
+    // .subscribe({
+    //   next: (response) => {
+    //     this.router.navigateByUrl('/admin/categories');
+    //  }
+    //})
+  }
+
+  //1. Observable approach
+  // onFormSubmit() {
+
+  //   const formValue =
+  //     this.addCategoryFormGroup.getRawValue();
+
+  //   const request: AddCategoryRequest = {
+  //     name: formValue.name,
+  //     urlHandle: formValue.urlHandle
+  //   };
+
+  //   this.categoryService
+  //     .addCategory(request)
+  //     .subscribe({
+  //       next: () => {
+  //         console.log('Category added successfully');
+
+  //         this.router.navigate([
+  //           '/admin/categories'
+  //         ]);
+  //       },
+
+  //       error: () => {
+  //         console.error(
+  //           'Add Category Request Failed'
+  //         );
+  //       }
+  //     });
+  // }
 }
